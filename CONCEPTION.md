@@ -65,3 +65,6 @@ Un utilisateur ne peut pas laisser un avis sur lui-même.
 Un passager peut annuler une réservation tant que le trajet n’a pas commencé.
 Lorsqu’une réservation est annulée, les places qu’elle occupait redeviennent
 disponibles pour d’autres passagers.
+   ## MCD
+
+   ![MCD du covoiturage](docs/MCD%20Covoiturage.png)
