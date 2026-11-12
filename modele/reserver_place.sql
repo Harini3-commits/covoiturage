@@ -70,15 +70,19 @@ BEGIN
     END IF;
 
     -- 5. Enregistrer la réservation
+    --    prix_unitaire recopie le prix du trajet à cet instant (RG6) : si le
+    --    conducteur change son prix ensuite, la réservation garde le sien.
     IF v_a_deja THEN
-        -- le passager avait annulé : on réactive sa réservation (une seule par trajet)
+        -- le passager avait annulé : on réactive sa réservation (une seule par trajet),
+        -- au prix du moment, puisque c'est une nouvelle réservation
         UPDATE reservation
-        SET nb_places_reservees = p_nb, statut = 'en_attente', date_reservation = now()
+        SET nb_places_reservees = p_nb, prix_unitaire = v_trajet.prix_place,
+            statut = 'en_attente', date_reservation = now()
         WHERE id = v_existante.id
         RETURNING id INTO v_id;
     ELSE
-        INSERT INTO reservation (passager_id, trajet_id, nb_places_reservees, statut)
-        VALUES (p_passager, p_trajet, p_nb, 'en_attente')
+        INSERT INTO reservation (passager_id, trajet_id, nb_places_reservees, prix_unitaire, statut)
+        VALUES (p_passager, p_trajet, p_nb, v_trajet.prix_place, 'en_attente')
         RETURNING id INTO v_id;
     END IF;
 

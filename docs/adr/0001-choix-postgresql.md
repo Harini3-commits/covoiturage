@@ -122,7 +122,26 @@ Chaque information est enregistrée une seule fois :
 - les informations d’un véhicule sont dans la table `vehicule` ;
 - les informations d’un trajet sont dans la table `trajet` ;
 - les informations d’une réservation sont dans la table `reservation` ;
-- les informations d’un avis sont dans la table `avis`.
+- les informations d’un avis sont dans la table `avis` ;
+- les villes sont dans la table `ville`, et un trajet y fait référence.
+
+Les places restantes et la note moyenne d’un conducteur ne sont pas stockées :
+elles sont calculées. Un compteur de places stocké serait écrit par toutes les
+réservations concurrentes, et il pourrait diverger.
+
+Deux copies sont faites exprès, et chacune a son gardien :
+
+- `reservation.prix_unitaire` recopie le prix du trajet au moment de la
+  réservation. C’est une photographie : elle ne doit pas suivre un changement
+  de prix ultérieur. `reserver_place` l’écrit une fois, puis personne ne la
+  modifie.
+- `trajet.conducteur_id` recopie le propriétaire du véhicule. Une clé
+  étrangère composite `(vehicule_id, conducteur_id)` vers
+  `vehicule(id, proprietaire_id)` empêche cette copie d’être fausse. En
+  contrepartie, un véhicule qui a déjà servi ne peut plus changer de
+  propriétaire.
+
+Le détail est dans `CONCEPTION.md`, section « Ce qu’on recopie exprès ».
 
 Nous ne dupliquons pas le nom du conducteur, la marque du véhicule ou la ville
 de départ dans la table `reservation`. Ces informations sont récupérées grâce

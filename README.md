@@ -29,9 +29,11 @@ deux fois.
 
 Le dossier `modele/` contient :
 
-- `creation.sql` : création des tables PostgreSQL.
+- `creation.sql` : création des tables PostgreSQL, de leurs contraintes et de
+  deux triggers (places du véhicule, avis seulement après le départ).
 - `generer_donnees.sql` : génération de données de test (10 utilisateurs,
-  5 véhicules, 10 trajets, des réservations et des avis).
+  5 véhicules, 10 villes, 10 trajets dont 5 passés, des réservations et des
+  avis sur les trajets passés).
 - `requetes.sql` : requêtes de recherche et de contrôle.
   - recherche de trajets par villes avec les places restantes ;
   - places restantes de chaque trajet et trajets complets ;
