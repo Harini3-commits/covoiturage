@@ -43,9 +43,10 @@ SELECT
 FROM generate_series(1, 10) AS i;
 
 -- 4. Générer 15 réservations
+-- (le passager est toujours différent du conducteur du trajet)
 INSERT INTO reservation (passager_id, trajet_id, nb_places_reservees, statut)
 SELECT
-    ((i - 1) % 10) + 1,
+    (i % 10) + 1,
     ((i - 1) % 10) + 1,
     1,
     'confirmee'
@@ -53,9 +54,10 @@ FROM generate_series(1, 15) AS i
 ON CONFLICT DO NOTHING;
 
 -- 5. Générer 10 avis
+-- (l'auteur est le passager du trajet, le destinataire est son conducteur)
 INSERT INTO avis (auteur_id, destinataire_id, trajet_id, note, commentaire)
 SELECT
-    ((i - 1) % 10) + 1,
+    (i % 10) + 1,
     ((i - 1) % 5) + 1,
     ((i - 1) % 10) + 1,
     1 + (i % 5),
